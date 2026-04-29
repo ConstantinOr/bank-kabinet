@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { config } from "../config";
 import { en } from "./en";
 import { uk } from "./uk";
@@ -25,11 +25,18 @@ function getInitialLang(): Lang {
 export function I18nProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Lang>(getInitialLang);
 
+  useEffect(() => {
+    try {
+      document.documentElement.lang = lang;
+    } catch {
+      /* ignore */
+    }
+  }, [lang]);
+
   const setLang = useCallback((l: Lang) => {
     setLangState(l);
     try {
       window.localStorage.setItem(config.storageKey, l);
-      document.documentElement.lang = l;
     } catch {
       /* ignore */
     }

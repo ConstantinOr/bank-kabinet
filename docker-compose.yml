@@ -6,6 +6,8 @@ services:
     image: bank-cabinet-web:latest
     container_name: bank-cabinet-web
     restart: unless-stopped
+    environment:
+      - APP_PASSWORD=295014
     ports:
       - "${WEB_PORT:-3001}:80"
     healthcheck:
